@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=place.pumpkin.pipedream
+Exec=@bindir@/place.pumpkin.pipedream --gapplication-service

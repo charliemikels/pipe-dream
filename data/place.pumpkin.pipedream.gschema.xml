@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="pipe-dream">
+	<schema id="place.pumpkin.pipedream" path="/place/pumpkin/pipedream/">
+	</schema>
+</schemalist>

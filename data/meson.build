@@ -1,6 +1,6 @@
 desktop_file = i18n.merge_file(
-        input: 'place.pumpkin.steamwishlistorderer.desktop.in',
-       output: 'place.pumpkin.steamwishlistorderer.desktop',
+        input: 'place.pumpkin.pipedream.desktop.in',
+       output: 'place.pumpkin.pipedream.desktop',
          type: 'desktop',
        po_dir: '../po',
       install: true,
@@ -13,8 +13,8 @@ if desktop_utils.found()
 endif
 
 appstream_file = i18n.merge_file(
-        input: 'place.pumpkin.steamwishlistorderer.metainfo.xml.in',
-       output: 'place.pumpkin.steamwishlistorderer.metainfo.xml',
+        input: 'place.pumpkin.pipedream.metainfo.xml.in',
+       output: 'place.pumpkin.pipedream.metainfo.xml',
        po_dir: '../po',
       install: true,
   install_dir: get_option('datadir') / 'metainfo'
@@ -24,7 +24,7 @@ appstreamcli = find_program('appstreamcli', required: false, disabler: true)
 test('Validate appstream file', appstreamcli,
      args: ['validate', '--no-net', '--explain', appstream_file])
 
-install_data('place.pumpkin.steamwishlistorderer.gschema.xml',
+install_data('place.pumpkin.pipedream.gschema.xml',
   install_dir: get_option('datadir') / 'glib-2.0' / 'schemas'
 )
 
@@ -37,8 +37,8 @@ test('Validate schema file',
 service_conf = configuration_data()
 service_conf.set('bindir', get_option('prefix') / get_option('bindir'))
 configure_file(
-  input: 'place.pumpkin.steamwishlistorderer.service.in',
-  output: 'place.pumpkin.steamwishlistorderer.service',
+  input: 'place.pumpkin.pipedream.service.in',
+  output: 'place.pumpkin.pipedream.service',
   configuration: service_conf,
   install_dir: get_option('datadir') / 'dbus-1' / 'services'
 )

@@ -1,5 +1,5 @@
 {
-    "id" : "place.pumpkin.steamwishlistorderer",
+    "id" : "place.pumpkin.pipedream",
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "47",
     "sdk" : "org.gnome.Sdk",
@@ -7,7 +7,7 @@
         "org.freedesktop.Sdk.Extension.node20",
         "org.freedesktop.Sdk.Extension.typescript"
     ],
-    "command" : "place.pumpkin.steamwishlistorderer",
+    "command" : "place.pumpkin.pipedream",
     "finish-args" : [
         "--share=network",
         "--share=ipc",

@@ -1,4 +1,4 @@
-application_id = 'place.pumpkin.steamwishlistorderer'
+application_id = 'place.pumpkin.pipedream'
 
 scalable_dir = 'hicolor' / 'scalable' / 'apps'
 install_data(

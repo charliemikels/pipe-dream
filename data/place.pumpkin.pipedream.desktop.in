@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=steam-wishlist-orderer
-Exec=place.pumpkin.steamwishlistorderer
-Icon=place.pumpkin.steamwishlistorderer
+Name=pipe-dream
+Exec=place.pumpkin.pipedream
+Icon=place.pumpkin.pipedream
 Terminal=false
 Type=Application
 Categories=Utility;

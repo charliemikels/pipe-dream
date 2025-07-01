@@ -25,18 +25,18 @@ import Adw from 'gi://Adw?version=1';
 import GLib from "gi://GLib";
 import Soup from "gi://Soup";
 
-import { SteamWishlistOrdererWindow } from './window.js';
+import { PipeDreamWindow } from './window.js';
 
 pkg.initGettext();
 pkg.initFormat();
 
-export const SteamWishlistOrdererApplication = GObject.registerClass(
-    class SteamWishlistOrdererApplication extends Adw.Application {
+export const PipeDreamApplication = GObject.registerClass(
+    class PipeDreamApplication extends Adw.Application {
         constructor() {
             super({
-                application_id: 'place.pumpkin.steamwishlistorderer',
+                application_id: 'place.pumpkin.pipedream',
                 flags: Gio.ApplicationFlags.DEFAULT_FLAGS,
-                resource_base_path: '/place/pumpkin/steamwishlistorderer'
+                resource_base_path: '/place/pumpkin/pipedream'
             });
 
             const quit_action = new Gio.SimpleAction({name: 'quit'});
@@ -49,8 +49,8 @@ export const SteamWishlistOrdererApplication = GObject.registerClass(
             const show_about_action = new Gio.SimpleAction({name: 'about'});
             show_about_action.connect('activate', action => {
                 const aboutParams = {
-                    application_name: 'steam-wishlist-orderer',
-                    application_icon: 'place.pumpkin.steamwishlistorderer',
+                    application_name: 'pipe-dream',
+                    application_icon: 'place.pumpkin.pipedream',
                     developer_name: 'Charlie',
                     version: '0.1.0',
                     developers: [
@@ -70,7 +70,7 @@ export const SteamWishlistOrdererApplication = GObject.registerClass(
             let {active_window} = this;
 
             if (!active_window)
-                active_window = new SteamWishlistOrdererWindow(this);
+                active_window = new PipeDreamWindow(this);
 
             active_window.present();
         }
@@ -120,7 +120,7 @@ async function getMyWishlist(steamUserId) {
 getMyWishlist("76561198108145031").catch(console.error)
 
 export function main(argv) {
-    const application = new SteamWishlistOrdererApplication();
+    const application = new PipeDreamApplication();
     console.log("hello world");
 
     return application.runAsync(argv);

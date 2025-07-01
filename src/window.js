@@ -22,11 +22,11 @@ import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 import Adw from 'gi://Adw';
 
-export const SteamWishlistOrdererWindow = GObject.registerClass({
-    GTypeName: 'SteamWishlistOrdererWindow',
-    Template: 'resource:///place/pumpkin/steamwishlistorderer/window.ui',
+export const PipeDreamWindow = GObject.registerClass({
+    GTypeName: 'PipeDreamWindow',
+    Template: 'resource:///place/pumpkin/pipedream/window.ui',
     InternalChildren: ['label'],
-}, class SteamWishlistOrdererWindow extends Adw.ApplicationWindow {
+}, class PipeDreamWindow extends Adw.ApplicationWindow {
     constructor(application) {
         super({ application });
     }

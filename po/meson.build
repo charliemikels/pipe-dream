@@ -1,1 +1,1 @@
-i18n.gettext('steam-wishlist-orderer', preset: 'glib')
+i18n.gettext('pipe-dream', preset: 'glib')
