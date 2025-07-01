@@ -87,9 +87,8 @@ const http_session = new Soup.Session();
 // const article_text_view = workbench.builder.get_object("article_text_view");
 // const article_title = workbench.builder.get_object("article_title");
 
-async function getMyWishlist() {
+async function getMyWishlist(steamUserId) {
     const date = GLib.DateTime.new_now_local();
-    const steamUserId = "76561198108145031";
 
     const url = `https://api.steampowered.com/IWishlistService/GetWishlist/v1?steamid=${steamUserId}`
 
@@ -118,18 +117,11 @@ async function getMyWishlist() {
 
 }
 
-getMyWishlist().catch(console.error)
+getMyWishlist("76561198108145031").catch(console.error)
 
 export function main(argv) {
     const application = new SteamWishlistOrdererApplication();
     console.log("hello world");
 
-
-
-
-    // fetch('https://api.steampowered.com/IWishlistService/GetWishlist/v1?steamid=76561198108145031')
-    //   .then(response => response.json())
-    //   .then(data => console.log(data))
-    //   .catch(error => console.error('Error:', error));
     return application.runAsync(argv);
 }
