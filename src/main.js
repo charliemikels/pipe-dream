@@ -22,6 +22,8 @@ import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import Gtk from 'gi://Gtk?version=4.0';
 import Adw from 'gi://Adw?version=1';
+import GLib from "gi://GLib";
+import Soup from "gi://Soup";
 
 import { SteamWishlistOrdererWindow } from './window.js';
 
@@ -74,6 +76,49 @@ export const SteamWishlistOrdererApplication = GObject.registerClass(
         }
     }
 );
+
+Gio._promisify(
+    Soup.Session.prototype,
+    "send_and_read_async",
+    "send_and_read_finish",
+);
+
+const http_session = new Soup.Session();
+// const article_text_view = workbench.builder.get_object("article_text_view");
+// const article_title = workbench.builder.get_object("article_title");
+
+async function getMyWishlist() {
+    const date = GLib.DateTime.new_now_local();
+    const steamUserId = "76561198108145031";
+
+    const url = `https://api.steampowered.com/IWishlistService/GetWishlist/v1?steamid=${steamUserId}`
+
+    const message = Soup.Message.new("GET", url);
+
+    const bytes = await http_session.send_and_read_async(
+        message,
+        GLib.PRIORITY_DEFAULT,
+        null,
+    );
+
+    if (message.get_status() !== Soup.Status.OK) {
+        console.error(`HTTP Status ${message.get_status()}`);
+        return;
+    }
+
+    const text_decoder = new TextDecoder("utf-8");
+    const decoded_text = text_decoder.decode(bytes.toArray());
+    const json = JSON.parse(decoded_text);
+
+    // console.log(json.response.items)
+    for (const element of json.response.items) {
+        console.log(element.appid)
+    }
+
+
+}
+
+getMyWishlist().catch(console.error)
 
 export function main(argv) {
     const application = new SteamWishlistOrdererApplication();
