@@ -31,7 +31,7 @@
     ],
     "modules" : [
         {
-            "name" : "steam-wishlist-orderer",
+            "name" : "pipe-dream",
             "builddir" : true,
             "buildsystem" : "meson",
             "sources" : [
