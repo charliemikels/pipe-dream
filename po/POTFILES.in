@@ -1,0 +1,8 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+data/place.pumpkin.steamwishlistorderer.desktop.in
+data/place.pumpkin.steamwishlistorderer.metainfo.xml.in
+data/place.pumpkin.steamwishlistorderer.gschema.xml
+src/main.js
+src/window.js
+src/window.ui

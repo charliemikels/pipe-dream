@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=place.pumpkin.steamwishlistorderer
+Exec=@bindir@/place.pumpkin.steamwishlistorderer --gapplication-service
