@@ -155,6 +155,42 @@ async function getReleventDetails(appid) {
 getMyWishlist("76561198108145031").catch(console.error)
 console.log( await getReleventDetails("3146520").catch(console.error) )
 
+
+
+// Gio._promisify(Gtk.FileDialog.prototype, "save", "save_finish");
+Gio._promisify(
+  Gio.File.prototype,
+  "replace_contents_async",
+  "replace_contents_finish",
+);
+
+const dataDir = GLib.get_user_config_dir();
+const destination = GLib.build_filenamev([dataDir, 'pipedream', 'test_config.json']);
+const dataJSON = new TextEncoder().encode(
+    JSON.stringify({
+        pie: "hello world",
+        fish: "new entry",
+        time: 1000
+    })
+);
+
+const file = Gio.File.new_for_path(destination);
+
+if (! file.get_parent().query_exists(null)) {
+  file.get_parent().make_directory_with_parents(null)
+}
+
+await file.replace_contents_async(
+    dataJSON,
+    null,
+    false,
+    Gio.FileCreateFlags.NONE,
+    null,
+);
+
+console.log(destination, dataJSON)
+
+
 export function main(argv) {
     const application = new PipeDreamApplication();
     console.log("hello world");
