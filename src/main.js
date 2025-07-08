@@ -165,7 +165,7 @@ Gio._promisify(
 );
 
 const dataDir = GLib.get_user_config_dir();
-const destination = GLib.build_filenamev([dataDir, 'pipedream', 'test_config.json']);
+const destination = GLib.build_filenamev([dataDir, 'pipedream', 'config.json']);
 const dataJSON = new TextEncoder().encode(
     JSON.stringify({
         pie: "hello world",
