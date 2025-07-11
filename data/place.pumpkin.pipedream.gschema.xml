@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="pipedream">
 	<schema id="place.pumpkin.pipedream" path="/place/pumpkin/pipedream/">
-	  <key name="userid" type="s">
-      <default>"hello world"</default>
+	  <!-- As it turns out, if this file is invalid, it doesn't break the build, but simply doesn't exist at runtime. -->
+    <!-- Type information: https://docs.gtk.org/glib/gvariant-format-strings.html  You can combine nest some types: `as` == array of strings | `a{ss}` == string-indexed table of strings. -->
+
+	  <!-- You can test this file from the unit tests menu. Unit Tests → Validate schema file. -->
+	  <key name="userid" type="i">
+      <default>-1</default>
       <summary>Steam User ID</summary>
       <description>The ID of a Steam user with a public wishlist.</description>
     </key>
