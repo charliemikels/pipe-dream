@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="pipedream">
 	<schema id="place.pumpkin.pipedream" path="/place/pumpkin/pipedream/">
-	  <key name="userid" type="int">
-      <default>0</default>
+	  <key name="userid" type="s">
+      <default>"hello world"</default>
       <summary>Steam User ID</summary>
       <description>The ID of a Steam user with a public wishlist.</description>
     </key>
