@@ -1,1 +1,1 @@
-i18n.gettext('pipe-dream', preset: 'glib')
+i18n.gettext('pipedream', preset: 'glib')

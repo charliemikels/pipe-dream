@@ -1,7 +1,7 @@
 {
     "id" : "place.pumpkin.pipedream",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "47",
+    "runtime-version" : "48",
     "sdk" : "org.gnome.Sdk",
     "sdk-extensions" : [
         "org.freedesktop.Sdk.Extension.node20",
@@ -31,7 +31,7 @@
     ],
     "modules" : [
         {
-            "name" : "pipe-dream",
+            "name" : "pipedream",
             "builddir" : true,
             "buildsystem" : "meson",
             "sources" : [

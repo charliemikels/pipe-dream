@@ -25,13 +25,13 @@ import Adw from 'gi://Adw?version=1';
 import GLib from "gi://GLib";
 import Soup from "gi://Soup";
 
-import { PipeDreamWindow } from './window.js';
+import { PipedreamWindow } from './window.js';
 
 pkg.initGettext();
 pkg.initFormat();
 
-export const PipeDreamApplication = GObject.registerClass(
-    class PipeDreamApplication extends Adw.Application {
+export const PipedreamApplication = GObject.registerClass(
+    class PipedreamApplication extends Adw.Application {
         constructor() {
             super({
                 application_id: 'place.pumpkin.pipedream',
@@ -70,7 +70,7 @@ export const PipeDreamApplication = GObject.registerClass(
             let {active_window} = this;
 
             if (!active_window)
-                active_window = new PipeDreamWindow(this);
+                active_window = new PipedreamWindow(this);
 
             active_window.present();
         }
@@ -190,9 +190,10 @@ await file.replace_contents_async(
 
 console.log(destination, dataJSON)
 
+const settings = new Gio.Settings({ schema_id: 'place.pumpkin.pipedream' });
 
 export function main(argv) {
-    const application = new PipeDreamApplication();
+    const application = new PipedreamApplication();
     console.log("hello world");
 
     return application.runAsync(argv);

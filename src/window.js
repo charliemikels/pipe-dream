@@ -22,11 +22,11 @@ import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 import Adw from 'gi://Adw';
 
-export const PipeDreamWindow = GObject.registerClass({
-    GTypeName: 'PipeDreamWindow',
+export const PipedreamWindow = GObject.registerClass({
+    GTypeName: 'PipedreamWindow',
     Template: 'resource:///place/pumpkin/pipedream/window.ui',
     InternalChildren: ['label'],
-}, class PipeDreamWindow extends Adw.ApplicationWindow {
+}, class PipedreamWindow extends Adw.ApplicationWindow {
     constructor(application) {
         super({ application });
     }
