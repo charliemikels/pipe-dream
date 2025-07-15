@@ -46,8 +46,6 @@ export const PipedreamApplication = GObject.registerClass(
             this.add_action(quit_action);
             this.set_accels_for_action('app.quit', ['<primary>q']);
 
-            this.set_accels_for_action('win.setuserid', [ '<Ctrl>o' ]);
-
             const show_about_action = new Gio.SimpleAction({name: 'about'});
             show_about_action.connect('activate', action => {
                 const aboutParams = {

@@ -31,13 +31,14 @@ export const PipedreamWindow = GObject.registerClass({
     constructor(application) {
         super({ application });
 
-        const setIdAction = new Gio.SimpleAction({name: 'setuserid'});
-        setIdAction.connect('activate', () => { this.setUserId() });
-        this.add_action(setIdAction);
+        this._steam_user_id_entry.connect('apply', () => {
+            this.setUserId();
+        });
     }
 
     setUserId() {
-      console.log("HELLO WORLD");
+        console.log(this._steam_user_id_entry.get_text())
+        console.log("HELLO WORLD");
     }
 });
 
