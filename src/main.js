@@ -108,9 +108,9 @@ async function getMyWishlist(steamUserId) {
     const json = JSON.parse(decoded_text);
 
     // console.log(json.response.items)
-    for (const element of json.response.items) {
-        console.log(element.appid)
-    }
+    // for (const element of json.response.items) {
+    //     console.log(element.appid)
+    // }
 
     return json.response.items
 
@@ -191,6 +191,9 @@ await file.replace_contents_async(
 console.log(destination, dataJSON)
 
 const settings = new Gio.Settings({ schema_id: 'place.pumpkin.pipedream' });
+console.log(settings.get_int("userid"))
+// settings.set_int("userid", 123)
+// settings.reset("userid")
 
 export function main(argv) {
     const application = new PipedreamApplication();
