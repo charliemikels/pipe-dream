@@ -33,7 +33,7 @@
                 <property name="spacing">18</property>
                 <property name="valign">center</property>
                 <child>
-                  <object class="AdwEntryRow">
+                  <object class="AdwEntryRow" id="steam_user_id_entry">
                     <property name="title" translatable="yes">ID</property>
                     <property name="show-apply-button">true</property>
                   </object>

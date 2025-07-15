@@ -25,7 +25,7 @@ import Adw from 'gi://Adw';
 export const PipedreamWindow = GObject.registerClass({
     GTypeName: 'PipedreamWindow',
     Template: 'resource:///place/pumpkin/pipedream/window.ui',
-    InternalChildren: ['label'],
+    InternalChildren: ['steam_user_id_entry'],
 }, class PipedreamWindow extends Adw.ApplicationWindow {
     constructor(application) {
         super({ application });
