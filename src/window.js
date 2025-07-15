@@ -21,6 +21,7 @@
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 import Adw from 'gi://Adw';
+import Gio from 'gi://Gio';
 
 export const PipedreamWindow = GObject.registerClass({
     GTypeName: 'PipedreamWindow',
@@ -29,6 +30,14 @@ export const PipedreamWindow = GObject.registerClass({
 }, class PipedreamWindow extends Adw.ApplicationWindow {
     constructor(application) {
         super({ application });
+
+        const setIdAction = new Gio.SimpleAction({name: 'setuserid'});
+        setIdAction.connect('activate', () => { this.setUserId() });
+        this.add_action(setIdAction);
+    }
+
+    setUserId() {
+      console.log("HELLO WORLD");
     }
 });
 
