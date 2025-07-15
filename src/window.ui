@@ -33,9 +33,18 @@
                 <property name="spacing">18</property>
                 <property name="valign">center</property>
                 <child>
-                  <object class="AdwEntryRow" id="steam_user_id_entry">
-                    <property name="title" translatable="yes">ID</property>
-                    <property name="show-apply-button">true</property>
+                  <object class="GtkListBox">
+                    <property name="selection-mode">0</property>
+                    <style>
+                      <class name="boxed-list"/>
+                    </style>
+                    <child>
+                      <object class="AdwEntryRow" id="steam_user_id_entry">
+                        <property name="title" translatable="yes">Steam ID</property>
+                        <property name="show-apply-button">true</property>
+                        <!-- <property name="tooltip-text" translatable="yes">Your steam ID</property> -->
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
