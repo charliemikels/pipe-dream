@@ -24,31 +24,37 @@
           </object>
         </child>
         <property name="content">
-          <object class="AdwClamp">
-            <property name="maximum-size">340</property>
-            <child>
-              <object class="GtkBox">
-                <property name="orientation">1</property>
-                <property name="margin-bottom">30</property>
-                <property name="spacing">18</property>
-                <property name="valign">center</property>
-                <child>
-                  <object class="GtkListBox">
-                    <property name="selection-mode">0</property>
-                    <style>
-                      <class name="boxed-list"/>
-                    </style>
-                    <child>
-                      <object class="AdwEntryRow" id="steam_user_id_entry">
-                        <property name="title" translatable="yes">Steam ID</property>
-                        <property name="show-apply-button">true</property>
-                        <!-- <property name="tooltip-text" translatable="yes">Your steam ID</property> -->
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
+          <object class="AdwStatusPage">
+            <property name="title" translatable="yes">Your Steam ID</property>
+            <property name="description" translatable="yes">Make sure your account and wishlist are public.</property>
+               <child>
+                <object class="AdwClamp">
+                  <property name="maximum-size">340</property>
+                  <child>
+                    <object class="GtkBox">
+                      <property name="orientation">1</property>
+                      <property name="margin-bottom">30</property>
+                      <property name="spacing">18</property>
+                      <property name="valign">center</property>
+                      <child>
+                        <object class="GtkListBox">
+                          <property name="selection-mode">0</property>
+                          <style>
+                            <class name="boxed-list"/>
+                          </style>
+                          <child>
+                            <object class="AdwEntryRow" id="steam_user_id_entry">
+                              <property name="title" translatable="yes">Steam ID</property>
+                              <property name="show-apply-button">true</property>
+                              <!-- <property name="tooltip-text" translatable="yes">Your steam ID</property> -->
+                            </object>
+                          </child>
+                        </object>
+                      </child>
+                    </object>
+                  </child>
+                </object>
+             </child>
           </object>
         </property>
       </object>
