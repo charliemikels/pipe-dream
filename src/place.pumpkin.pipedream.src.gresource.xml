@@ -3,5 +3,6 @@
   <gresource prefix="/place/pumpkin/pipedream/js">
     <file>main.js</file>
     <file>window.js</file>
+    <file>steam.js</file>
   </gresource>
 </gresources>

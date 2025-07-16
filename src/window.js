@@ -23,6 +23,8 @@ import Gtk from 'gi://Gtk';
 import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 
+import { fetch_steam_user_info } from './steam.js';
+
 export const PipedreamWindow = GObject.registerClass({
     GTypeName: 'PipedreamWindow',
     Template: 'resource:///place/pumpkin/pipedream/window.ui',
@@ -36,9 +38,11 @@ export const PipedreamWindow = GObject.registerClass({
         });
     }
 
-    setUserId() {
-        console.log(this._steam_user_id_entry.get_text())
-        console.log("HELLO WORLD");
+    async setUserId() {
+        const user_id = this._steam_user_id_entry.get_text();
+        console.log("User ID:", user_id);
+
+        const result = await fetch_steam_user_info(user_id);
     }
 });
 
