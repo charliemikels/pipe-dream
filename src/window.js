@@ -30,6 +30,7 @@ export const PipedreamWindow = GObject.registerClass({
     Template: 'resource:///place/pumpkin/pipedream/window.ui',
     InternalChildren: [
         'steam_user_id_entry',
+        'toast_overlay',
         'stack',
         'id_entry_page',
         'loading_spinner_page'
@@ -50,10 +51,16 @@ export const PipedreamWindow = GObject.registerClass({
         const result = await fetch_steam_user_info(user_id);
 
         if (result.list == null) {
+            // For whatever reason, a list was not generated.
             this._stack.set_visible_child(this._id_entry_page);
-            // TODO: Toast explaining the error
+
+            const toast = new Adw.Toast({
+                title: `Could not load wishlist for user ID ${user_id}. Status code ${result.status}.`,
+            });
+            this._toast_overlay.add_toast(toast);
         } else {
             console.log("Success")
+            this._toast_overlay.dismiss_all()
             // TODO: Make a third page displaying results of lookup
         }
     }
