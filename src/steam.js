@@ -127,10 +127,69 @@ async function getReleventAppDetails(appid) {
 // -----------------------------------------------------------------------------
 
 
-export async function fetch_steam_user_info(steam_user_id) {
-    console.log("Running Steam logic for ID:", steam_user_id);
+export const WishlistGame = GObject.registerClass(
+  {
+    Properties: {
+      name: GObject.ParamSpec.string(
+        "name",
+        null,
+        null,
+        GObject.ParamFlags.READWRITE,
+        "",
+      ),
+      appid: GObject.ParamSpec.int64(
+        "appid",
+        null,
+        null,
+        GObject.ParamFlags.READWRITE,
+        Number.MIN_SAFE_INTEGER,
+        Number.MAX_SAFE_INTEGER,
+        0,
+      ),
+      wishlistpriority: GObject.ParamSpec.int64(
+        "wishlistpriority",
+        null,
+        null,
+        GObject.ParamFlags.READWRITE,
+        Number.MIN_SAFE_INTEGER,
+        Number.MAX_SAFE_INTEGER,
+        0,
+      ),
+      // dateadded: GObject.ParamSpec.int64(
+      //   "dateadded",
+      //   null,
+      //   null,
+      //   GObject.ParamFlags.READWRITE,
+      //   Number.MIN_SAFE_INTEGER,
+      //   Number.MAX_SAFE_INTEGER,
+      //   0,
+      // ),
+    },
+  },
+  class WishlistGame extends GObject.Object {},
+)
 
+
+
+export async function fetch_steam_user_info(steam_user_id) {
+    // Get wishlist
     const results = await getMyWishlist(steam_user_id)
+
+    const wishlist_games = []
+    for (const entry of results.list) {
+        const wishlist_game = new WishlistGame({
+            name: "placeholder",
+            appid: entry.appid,
+            wishlistpriority: entry.priority,
+            // dateadded: TODO
+        });
+        wishlist_games.push(wishlist_game)
+    }
+
+    const data_model = new Gio.ListStore({ item_type: WishlistGame });
+    data_model.splice(0, 0, wishlist_games);
+    results.data_model = data_model
+
     return results
     // console.log(list)
     // return results, http_code

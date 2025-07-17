@@ -33,7 +33,14 @@ export const PipedreamWindow = GObject.registerClass({
         'toast_overlay',
         'stack',
         'id_entry_page',
-        'loading_spinner_page'
+        'loading_spinner_page',
+
+        'wishlist_overview_page',
+        'wishlist_col_view',
+        'col_app_id',
+        'col_name',
+        'col_priority',
+        'col_add_date',
     ],
 }, class PipedreamWindow extends Adw.ApplicationWindow {
     constructor(application) {
@@ -42,6 +49,59 @@ export const PipedreamWindow = GObject.registerClass({
         this._steam_user_id_entry.connect('apply', () => {
             this.setUserId();
         });
+
+        // Column setup
+        // this._col_app_id.factory.connect("setup", (_self, list_item) => {
+        //   const label = new Gtk.Label({
+        //     margin_start: 12,
+        //     margin_end: 12,
+        //   });
+        //   list_item.set_child(label);
+        // });
+        // this._col_app_id.factory.connect("bind", (_self, list_item) => {
+        //   const label_widget = list_item.get_child();
+        //   const model_item = list_item.get_item();
+        //   label_widget.label = model_item.appid;
+        // });
+
+        this._col_name.factory.connect("setup", (_self, list_item) => {
+          const label = new Gtk.Label({
+            margin_start: 12,
+            margin_end: 12,
+          });
+          list_item.set_child(label);
+        });
+        this._col_name.factory.connect("bind", (_self, list_item) => {
+          const label_widget = list_item.get_child();
+          const model_item = list_item.get_item();
+          label_widget.label = model_item.name;
+        });
+
+        // this._col_priority.factory.connect("setup", (_self, list_item) => {
+        //   const label = new Gtk.Label({
+        //     margin_start: 12,
+        //     margin_end: 12,
+        //   });
+        //   list_item.set_child(label);
+        // });
+        // this._col_priority.factory.connect("bind", (_self, list_item) => {
+        //   const label_widget = list_item.get_child();
+        //   const model_item = list_item.get_item();
+        //   label_widget.label = model_item.priority;
+        // });
+
+        // this._col_add_date.factory.connect("setup", (_self, list_item) => {
+        //   const label = new Gtk.Label({
+        //     margin_start: 12,
+        //     margin_end: 12,
+        //   });
+        //   list_item.set_child(label);
+        // });
+        // this._col_add_date.factory.connect("bind", (_self, list_item) => {
+        //   const label_widget = list_item.get_child();
+        //   const model_item = list_item.get_item();
+        //   label_widget.label = model_item.date_added;
+        // });
     }
 
     async setUserId() {
@@ -60,8 +120,23 @@ export const PipedreamWindow = GObject.registerClass({
             this._toast_overlay.add_toast(toast);
         } else {
             console.log("Success")
+            console.log(result.list)
             this._toast_overlay.dismiss_all()
-            // TODO: Make a third page displaying results of lookup
+
+
+
+            console.log(result.data_model)
+
+
+            const sort_model = new Gtk.SortListModel({
+              model: result.data_model,
+              sorter: this._wishlist_col_view.sorter,
+            });
+            this._wishlist_col_view.model = new Gtk.SingleSelection({
+              model: sort_model,
+            });
+
+            this._stack.set_visible_child(this._wishlist_overview_page);
         }
     }
 });
