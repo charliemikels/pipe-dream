@@ -28,7 +28,12 @@ import { fetch_steam_user_info } from './steam.js';
 export const PipedreamWindow = GObject.registerClass({
     GTypeName: 'PipedreamWindow',
     Template: 'resource:///place/pumpkin/pipedream/window.ui',
-    InternalChildren: ['steam_user_id_entry'],
+    InternalChildren: [
+        'steam_user_id_entry',
+        'stack',
+        'id_entry_page',
+        'loading_spinner_page'
+    ],
 }, class PipedreamWindow extends Adw.ApplicationWindow {
     constructor(application) {
         super({ application });
@@ -41,8 +46,16 @@ export const PipedreamWindow = GObject.registerClass({
     async setUserId() {
         const user_id = this._steam_user_id_entry.get_text();
         console.log("User ID:", user_id);
-
+        this._stack.set_visible_child(this._loading_spinner_page);
         const result = await fetch_steam_user_info(user_id);
+
+        if (result.list == null) {
+            this._stack.set_visible_child(this._id_entry_page);
+            // TODO: Toast explaining the error
+        } else {
+            console.log("Success")
+            // TODO: Make a third page displaying results of lookup
+        }
     }
 });
 

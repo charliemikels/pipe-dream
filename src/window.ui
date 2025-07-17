@@ -24,37 +24,82 @@
           </object>
         </child>
         <property name="content">
-          <object class="AdwStatusPage">
-            <property name="title" translatable="yes">Your Steam ID</property>
-            <property name="description" translatable="yes">Make sure your account and wishlist are public.</property>
-               <child>
-                <object class="AdwClamp">
-                  <property name="maximum-size">340</property>
-                  <child>
-                    <object class="GtkBox">
-                      <property name="orientation">1</property>
-                      <property name="margin-bottom">30</property>
-                      <property name="spacing">18</property>
-                      <property name="valign">center</property>
-                      <child>
-                        <object class="GtkListBox">
-                          <property name="selection-mode">0</property>
-                          <style>
-                            <class name="boxed-list"/>
-                          </style>
+          <object class="GtkStack" id="stack">
+            <!-- <property name="interpolate-size" bind-source="interpolate_switch" bind-property="active" bind-flags="sync-create"/> -->
+            <!-- <property name="transition-duration" bind-source="transition_spin_button" bind-property="value" bind-flags="sync-create"/> -->
+            <!-- <property name="transition-type" bind-source="transition_row" bind-property="selected" bind-flags="sync-create"/> -->
+            <child>
+              <object class="GtkStackPage">
+                <property name="title" translatable="yes">Steam ID</property>
+                <property name="child">
+                  <object class="AdwStatusPage" id="id_entry_page">
+                    <property name="title" translatable="yes">Your Steam ID</property>
+                    <property name="description" translatable="yes">Make sure your account and wishlist are public.</property>
+                       <child>
+                        <object class="AdwClamp">
+                          <property name="maximum-size">340</property>
                           <child>
-                            <object class="AdwEntryRow" id="steam_user_id_entry">
-                              <property name="title" translatable="yes">Steam ID</property>
-                              <property name="show-apply-button">true</property>
-                              <!-- <property name="tooltip-text" translatable="yes">Your steam ID</property> -->
+                            <object class="GtkBox">
+                              <property name="orientation">1</property>
+                              <property name="margin-bottom">30</property>
+                              <property name="spacing">18</property>
+                              <property name="valign">center</property>
+                              <child>
+                                <object class="GtkListBox">
+                                  <property name="selection-mode">0</property>
+                                  <style>
+                                    <class name="boxed-list"/>
+                                  </style>
+                                  <child>
+                                    <object class="AdwEntryRow" id="steam_user_id_entry">
+                                      <property name="title" translatable="yes">Steam ID</property>
+                                      <property name="show-apply-button">true</property>
+                                      <!-- <property name="tooltip-text" translatable="yes">Your steam ID</property> -->
+                                    </object>
+                                  </child>
+                                </object>
+                              </child>
                             </object>
                           </child>
                         </object>
-                      </child>
-                    </object>
-                  </child>
-                </object>
-             </child>
+                     </child>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkStackPage">
+                <property name="title" translatable="yes">Loading Data From Steam</property>
+                <property name="child">
+                  <object class="AdwStatusPage" id="loading_spinner_page">
+                    <property name="title" translatable="yes">Loading</property>
+                    <property name="description" translatable="yes">Downloading your wishlist.</property>
+                       <child>
+                        <object class="AdwClamp">
+                          <property name="maximum-size">340</property>
+                          <child>
+                            <object class="GtkBox">
+                              <property name="orientation">1</property>
+                              <property name="margin-bottom">30</property>
+                              <property name="spacing">18</property>
+                              <property name="valign">center</property>
+                              <child>
+                                <object class="AdwSpinner">
+                                  <property name="halign">3</property>
+                                  <property name="valign">3</property>
+                                  <property name="width-request">48</property>
+                                  <property name="height-request">48</property>
+                                </object>
+
+                              </child>
+                            </object>
+                          </child>
+                        </object>
+                     </child>
+                  </object>
+                </property>
+              </object>
+            </child>
           </object>
         </property>
       </object>

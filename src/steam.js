@@ -14,10 +14,12 @@ const http_session = new Soup.Session();
 // const article_text_view = workbench.builder.get_object("article_text_view");
 // const article_title = workbench.builder.get_object("article_title");
 
-async function getMyWishlist(steamUserId) {
+async function getMyWishlist(steamUserId) /*returns results (can be null), and status code*/ {
     const url = `https://api.steampowered.com/IWishlistService/GetWishlist/v1?steamid=${steamUserId}`
 
     const message = Soup.Message.new("GET", url);
+
+    const results = {list: null, status: null}
 
     const bytes = await http_session.send_and_read_async(
         message,
@@ -25,9 +27,11 @@ async function getMyWishlist(steamUserId) {
         null,
     );
 
+    results.status = message.get_status()
     if (message.get_status() !== Soup.Status.OK) {
         console.error(`HTTP Status ${message.get_status()}`);
-        return;
+        results.list = null
+        return results
     }
 
     const text_decoder = new TextDecoder("utf-8");
@@ -39,7 +43,9 @@ async function getMyWishlist(steamUserId) {
     //     console.log(element.appid)
     // }
 
-    return json.response.items
+    results.list = json.response.items
+
+    return results
 
     // See: `https://api.steampowered.com/ISteamApps/GetAppList/v2/` to get a catalogue of every steam app and it's name
     // See: `https://store.steampowered.com/api/appdetails?appids=${appid}`
@@ -124,7 +130,8 @@ async function getReleventAppDetails(appid) {
 export async function fetch_steam_user_info(steam_user_id) {
     console.log("Running Steam logic for ID:", steam_user_id);
 
-    const list = await getMyWishlist(steam_user_id)
-    console.log(list)
-    return list
+    const results = await getMyWishlist(steam_user_id)
+    return results
+    // console.log(list)
+    // return results, http_code
 }
