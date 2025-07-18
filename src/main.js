@@ -26,7 +26,7 @@ import GLib from "gi://GLib";
 
 
 import { PipedreamWindow } from './window.js';
-import { get_cataloge } from './steam.js';
+import { get_catalog } from './steam.js';
 
 pkg.initGettext();
 pkg.initFormat();
@@ -78,7 +78,7 @@ export const PipedreamApplication = GObject.registerClass(
     }
 );
 
-get_cataloge()  // pre-load steam catalogue. Doesn't need to be stored, just kick it off early in case we need to do network stuff.
+get_catalog()  // pre-load steam catalog. Doesn't need to be stored, just kick it off early in case we need to do network stuff.
 
 export function main(argv) {
     const application = new PipedreamApplication();

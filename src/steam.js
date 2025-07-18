@@ -48,7 +48,7 @@ async function getMyWishlist(steamUserId) /*returns results (can be null), and s
 
     return results
 
-    // See: `https://api.steampowered.com/ISteamApps/GetAppList/v2/` to get a catalogue of every steam app and it's name
+    // See: `https://api.steampowered.com/ISteamApps/GetAppList/v2/` to get a catalog of every steam app and it's name
     // See: `https://store.steampowered.com/api/appdetails?appids=${appid}`
     // returns data.name and data.header_image  (Also data.screenshots, data.background, and data.support_info.url)
     //
@@ -57,6 +57,7 @@ async function getMyWishlist(steamUserId) /*returns results (can be null), and s
 
 async function getReleventAppDetails(appid) {
     // TODO: Check if the data is cashed before fetching again.
+    // TODO: when we get get relevent app details, check if the name of the app matches the name in out cached catalog. We may need to refresh the catalog if they don't match.
     const url = `https://store.steampowered.com/api/appdetails?appids=${appid}`
     // although the name implies that we can list multiple app IDs, this feature was disabled on steam's end, and we have to go one-by-one.
 
@@ -86,15 +87,15 @@ async function getReleventAppDetails(appid) {
 
 // console.log( await getReleventDetails("3146520").catch(console.error) )
 
-var steam_catalogue = null
-var steam_catalogue_update_date = null
-const cashe_catalogue_path = GLib.build_filenamev([GLib.get_user_cache_dir(), 'pipedream', 'catalogue.json']);
+var steam_catalog = null
+var steam_catalog_update_date = null
+const cashe_catalog_path = GLib.build_filenamev([GLib.get_user_cache_dir(), 'pipedream', 'catalog.json']);
 
-async function refresh_catalogue() {
-    const catalogue_url = "https://api.steampowered.com/ISteamApps/GetAppList/v2/"
-    const message = Soup.Message.new("GET", catalogue_url);
+async function refresh_catalog() {
+    const catalog_url = "https://api.steampowered.com/ISteamApps/GetAppList/v2/"
+    const message = Soup.Message.new("GET", catalog_url);
 
-    console.log("requesting catalogue from steam's network")
+    console.log("requesting catalog from steam's network")
     const bytes = await http_session.send_and_read_async(
         message,
         GLib.PRIORITY_DEFAULT,
@@ -108,10 +109,10 @@ async function refresh_catalogue() {
     const text_decoder = new TextDecoder("utf-8");
     const decoded_text = text_decoder.decode(bytes.toArray());
 
-    const new_catalogue_full = JSON.parse(decoded_text);
-    // crush full catalogue from applist.apps.[{appid: n, name: x}]
+    const new_catalog_full = JSON.parse(decoded_text);
+    // crush full catalog from applist.apps.[{appid: n, name: x}]
     // to just {appid: name}
-    const new_catalogue = new_catalogue_full.applist.apps.reduce(
+    const new_catalog = new_catalog_full.applist.apps.reduce(
         (accumulator, current_value) => {
             accumulator[current_value.appid] = current_value.name
             return accumulator
@@ -119,41 +120,41 @@ async function refresh_catalogue() {
         {}
     );
 
-    // cache catalogue to file
-    const catalogue_data_json = new TextEncoder().encode(
-        JSON.stringify(new_catalogue)
+    // cache catalog to file
+    const catalog_data_json = new TextEncoder().encode(
+        JSON.stringify(new_catalog)
     );
-    const cache_file = Gio.File.new_for_path(cashe_catalogue_path);
+    const cache_file = Gio.File.new_for_path(cashe_catalog_path);
 
     if (! cache_file.get_parent().query_exists(null) ) {
         cache_file.get_parent().make_directory_with_parents(null)
     }
 
     await cache_file.replace_contents_async(
-        catalogue_data_json,
+        catalog_data_json,
         null,
         false,
         Gio.FileCreateFlags.NONE,
         null,
     );
 
-    // const new_catalogue_full = JSON.parse(decoded_text);
-    steam_catalogue = new_catalogue
-    steam_catalogue_update_date = Date.now()
-    return steam_catalogue
+    // const new_catalog_full = JSON.parse(decoded_text);
+    steam_catalog = new_catalog
+    steam_catalog_update_date = Date.now()
+    return steam_catalog
 }
 
-export async function get_cataloge() {
-    if (steam_catalogue) { return steam_catalogue }
+export async function get_catalog() {
+    if (steam_catalog) { return steam_catalog }
 
-    const cache_file = Gio.File.new_for_path(cashe_catalogue_path);
+    const cache_file = Gio.File.new_for_path(cashe_catalog_path);
     if (! cache_file.query_exists(null) ) {
-        // no catalogue file. Refresh from network.
-        await refresh_catalogue()
-        return steam_catalogue
+        // no catalog file. Refresh from network.
+        await refresh_catalog()
+        return steam_catalog
     }
 
-    // load catalogue from cache file
+    // load catalog from cache file
     let contentsBytes;
     try {
         // Retrieve contents asynchronously
@@ -162,7 +163,7 @@ export async function get_cataloge() {
         contentsBytes = (await cache_file.load_contents_async(null))[0];
     } catch (e) {
         logError(e, `Unable to open ${cache_file.peek_path()}`);
-        return await refresh_catalogue();
+        return await refresh_catalog();
     }
 
     let decoded_text;
@@ -171,24 +172,24 @@ export async function get_cataloge() {
         decoded_text = text_decoder.decode(contentsBytes);
     } catch (e) {
         logError(e, "unable to decode file bytes to utf8.")
-        return await refresh_catalogue();
+        return await refresh_catalog();
     }
 
-    const new_catalogue = JSON.parse(decoded_text);
-    steam_catalogue = new_catalogue
-    return steam_catalogue
+    const new_catalog = JSON.parse(decoded_text);
+    steam_catalog = new_catalog
+    return steam_catalog
 }
 
 async function get_app_name(appid) {
-    let catalogue = await get_cataloge()
-    if (catalogue[appid]) { return catalogue[appid] }
+    let catalog = await get_catalog()
+    if (catalog[appid]) { return catalog[appid] }
 
-    console.log(`AppID ${appid} not found in current catalogue.`)
-    if (!steam_catalogue_update_date || Date.now() - steam_catalogue_update_date >= 5 * 60 * 1000 ) {
-        await refresh_catalogue()
+    console.log(`AppID ${appid} not found in current catalog.`)
+    if (!steam_catalog_update_date || Date.now() - steam_catalog_update_date >= 5 * 60 * 1000 ) {
+        await refresh_catalog()
         return await get_app_name(appid)
     } else {
-        console.warn(`Catalogue was refreshed too recently and App ${appid} is still not known, using a placeholder instead.`)
+        console.warn(`Catalog was refreshed too recently and App ${appid} is still not known, using a placeholder instead.`)
     }
     return `Placeholder: app ${appid}`
 }
