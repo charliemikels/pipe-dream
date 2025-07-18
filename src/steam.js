@@ -9,17 +9,23 @@ Gio._promisify(
     "send_and_read_async",
     "send_and_read_finish",
 );
+Gio._promisify(
+    Gio.File.prototype,
+    "replace_contents_async",
+    "replace_contents_finish",
+);
+Gio._promisify(
+    Gio.File.prototype,
+    'load_contents_async',
+    'load_contents_finish'
+);
 
 const http_session = new Soup.Session();
-// const article_text_view = workbench.builder.get_object("article_text_view");
-// const article_title = workbench.builder.get_object("article_title");
 
 async function getMyWishlist(steamUserId) /*returns results (can be null), and status code*/ {
     const url = `https://api.steampowered.com/IWishlistService/GetWishlist/v1?steamid=${steamUserId}`
-
     const message = Soup.Message.new("GET", url);
-
-    const results = {list: null, status: null}
+    const results = { list: null, status: null }
 
     const bytes = await http_session.send_and_read_async(
         message,
@@ -38,11 +44,6 @@ async function getMyWishlist(steamUserId) /*returns results (can be null), and s
     const decoded_text = text_decoder.decode(bytes.toArray());
     const json = JSON.parse(decoded_text);
 
-    // console.log(json.response.items)
-    // for (const element of json.response.items) {
-    //     console.log(element.appid)
-    // }
-
     results.list = json.response.items
 
     return results
@@ -52,8 +53,6 @@ async function getMyWishlist(steamUserId) /*returns results (can be null), and s
     // returns data.name and data.header_image  (Also data.screenshots, data.background, and data.support_info.url)
     //
     // See: `https://store.steampowered.com/app/${appid}`
-
-    // await getReleventDetails(json.response.items[1].appid).catch(console.error)
 }
 
 async function getReleventAppDetails(appid) {
@@ -85,46 +84,114 @@ async function getReleventAppDetails(appid) {
     }
 }
 
-// getMyWishlist("76561198108145031").catch(console.error)
 // console.log( await getReleventDetails("3146520").catch(console.error) )
 
+var steam_catalogue = null
+var steam_catalogue_update_date = null
+const cashe_catalogue_path = GLib.build_filenamev([GLib.get_user_cache_dir(), 'pipedream', 'catalogue.json']);
 
+async function refresh_catalogue() {
+    const catalogue_url = "https://api.steampowered.com/ISteamApps/GetAppList/v2/"
+    const message = Soup.Message.new("GET", catalogue_url);
 
-// Gio._promisify(Gtk.FileDialog.prototype, "save", "save_finish");
-// Gio._promisify(
-//   Gio.File.prototype,
-//   "replace_contents_async",
-//   "replace_contents_finish",
-// );
-//
-// const dataDir = GLib.get_user_config_dir();
-// const destination = GLib.build_filenamev([dataDir, 'pipedream', 'config.json']);
-// const dataJSON = new TextEncoder().encode(
-//     JSON.stringify({
-//         pie: "hello world",
-//         fish: "new entry",
-//         time: 1000
-//     })
-// );
+    console.log("requesting catalogue from steam's network")
+    const bytes = await http_session.send_and_read_async(
+        message,
+        GLib.PRIORITY_DEFAULT,
+        null,
+    );
+    if (message.get_status() !== Soup.Status.OK) {
+        console.error(`HTTP Status ${message.get_status()}`);
+        return;
+    }
 
-// const file = Gio.File.new_for_path(destination);
+    const text_decoder = new TextDecoder("utf-8");
+    const decoded_text = text_decoder.decode(bytes.toArray());
 
-// if (! file.get_parent().query_exists(null)) {
-//   file.get_parent().make_directory_with_parents(null)
-// }
+    const new_catalogue_full = JSON.parse(decoded_text);
+    // crush full catalogue from applist.apps.[{appid: n, name: x}]
+    // to just {appid: name}
+    const new_catalogue = new_catalogue_full.applist.apps.reduce(
+        (accumulator, current_value) => {
+            accumulator[current_value.appid] = current_value.name
+            return accumulator
+        },
+        {}
+    );
 
-// await file.replace_contents_async(
-//     dataJSON,
-//     null,
-//     false,
-//     Gio.FileCreateFlags.NONE,
-//     null,
-// );
+    // cache catalogue to file
+    const catalogue_data_json = new TextEncoder().encode(
+        JSON.stringify(new_catalogue)
+    );
+    const cache_file = Gio.File.new_for_path(cashe_catalogue_path);
 
-// console.log(destination, dataJSON)
+    if (! cache_file.get_parent().query_exists(null) ) {
+        cache_file.get_parent().make_directory_with_parents(null)
+    }
 
+    await cache_file.replace_contents_async(
+        catalogue_data_json,
+        null,
+        false,
+        Gio.FileCreateFlags.NONE,
+        null,
+    );
 
-// -----------------------------------------------------------------------------
+    // const new_catalogue_full = JSON.parse(decoded_text);
+    steam_catalogue = new_catalogue
+    steam_catalogue_update_date = Date.now()
+    return steam_catalogue
+}
+
+export async function get_cataloge() {
+    if (steam_catalogue) { return steam_catalogue }
+
+    const cache_file = Gio.File.new_for_path(cashe_catalogue_path);
+    if (! cache_file.query_exists(null) ) {
+        // no catalogue file. Refresh from network.
+        await refresh_catalogue()
+        return steam_catalogue
+    }
+
+    // load catalogue from cache file
+    let contentsBytes;
+    try {
+        // Retrieve contents asynchronously
+        // The first index of the returned array contains a byte
+        // array of the contents
+        contentsBytes = (await cache_file.load_contents_async(null))[0];
+    } catch (e) {
+        logError(e, `Unable to open ${cache_file.peek_path()}`);
+        return await refresh_catalogue();
+    }
+
+    let decoded_text;
+    try {
+        const text_decoder = new TextDecoder("utf-8");
+        decoded_text = text_decoder.decode(contentsBytes);
+    } catch (e) {
+        logError(e, "unable to decode file bytes to utf8.")
+        return await refresh_catalogue();
+    }
+
+    const new_catalogue = JSON.parse(decoded_text);
+    steam_catalogue = new_catalogue
+    return steam_catalogue
+}
+
+async function get_app_name(appid) {
+    let catalogue = await get_cataloge()
+    if (catalogue[appid]) { return catalogue[appid] }
+
+    console.log(`AppID ${appid} not found in current catalogue.`)
+    if (!steam_catalogue_update_date || Date.now() - steam_catalogue_update_date >= 5 * 60 * 1000 ) {
+        await refresh_catalogue()
+        return await get_app_name(appid)
+    } else {
+        console.warn(`Catalogue was refreshed too recently and App ${appid} is still not known, using a placeholder instead.`)
+    }
+    return `Placeholder: app ${appid}`
+}
 
 
 export const WishlistGame = GObject.registerClass(
@@ -169,8 +236,6 @@ export const WishlistGame = GObject.registerClass(
   class WishlistGame extends GObject.Object {},
 )
 
-
-
 export async function fetch_steam_user_info(steam_user_id) {
     // Get wishlist
     const results = await getMyWishlist(steam_user_id)
@@ -181,7 +246,7 @@ export async function fetch_steam_user_info(steam_user_id) {
         console.log(entry)
         console.log(entry.appid)
         const wishlist_game = new WishlistGame({
-            name: "tmp. ID == " + entry.appid.toString(),
+            name: await get_app_name(entry.appid.toString()),
             appid: entry.appid,
             wishlistpriority: entry.priority,
             // dateadded: TODO

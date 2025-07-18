@@ -26,6 +26,7 @@ import GLib from "gi://GLib";
 
 
 import { PipedreamWindow } from './window.js';
+import { get_cataloge } from './steam.js';
 
 pkg.initGettext();
 pkg.initFormat();
@@ -77,12 +78,7 @@ export const PipedreamApplication = GObject.registerClass(
     }
 );
 
-
-
-const settings = new Gio.Settings({ schema_id: 'place.pumpkin.pipedream' });
-console.log(settings.get_string("userid"))
-// settings.set_string("userid", "123123")
-// settings.reset("userid")
+get_cataloge()  // pre-load steam catalogue. Doesn't need to be stored, just kick it off early in case we need to do network stuff.
 
 export function main(argv) {
     const application = new PipedreamApplication();
