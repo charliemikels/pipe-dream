@@ -46,6 +46,11 @@ export const PipedreamWindow = GObject.registerClass({
     constructor(application) {
         super({ application });
 
+        const settings = new Gio.Settings({ schema_id: 'place.pumpkin.pipedream' });
+        if ( settings.get_string("userid") ) {
+            this._steam_user_id_entry.set_text( settings.get_string("userid") )
+        }
+
         this._steam_user_id_entry.connect('apply', () => {
             this.setUserId();
         });
@@ -120,13 +125,10 @@ export const PipedreamWindow = GObject.registerClass({
             this._toast_overlay.add_toast(toast);
         } else {
             console.log("Success")
-            console.log(result.list)
             this._toast_overlay.dismiss_all()
 
-
-
-            console.log(result.data_model)
-
+            const settings = new Gio.Settings({ schema_id: 'place.pumpkin.pipedream' });
+            settings.set_string("userid", user_id)
 
             const sort_model = new Gtk.SortListModel({
               model: result.data_model,

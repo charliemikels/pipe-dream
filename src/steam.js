@@ -174,11 +174,14 @@ export const WishlistGame = GObject.registerClass(
 export async function fetch_steam_user_info(steam_user_id) {
     // Get wishlist
     const results = await getMyWishlist(steam_user_id)
+    if ( results.list == null) { return results }
 
     const wishlist_games = []
     for (const entry of results.list) {
+        console.log(entry)
+        console.log(entry.appid)
         const wishlist_game = new WishlistGame({
-            name: "placeholder",
+            name: "tmp. ID == " + entry.appid.toString(),
             appid: entry.appid,
             wishlistpriority: entry.priority,
             // dateadded: TODO

@@ -80,8 +80,8 @@ export const PipedreamApplication = GObject.registerClass(
 
 
 const settings = new Gio.Settings({ schema_id: 'place.pumpkin.pipedream' });
-console.log(settings.get_int("userid"))
-// settings.set_int("userid", 123)
+console.log(settings.get_string("userid"))
+// settings.set_string("userid", "123123")
 // settings.reset("userid")
 
 export function main(argv) {

@@ -5,10 +5,11 @@
     <!-- Type information: https://docs.gtk.org/glib/gvariant-format-strings.html  You can combine nest some types: `as` == array of strings | `a{ss}` == string-indexed table of strings. -->
 
 	  <!-- You can test this file from the unit tests menu. Unit Tests → Validate schema file. -->
-	  <key name="userid" type="i">
-      <default>-1</default>
+	  <key name="userid" type="s">
+	    <!-- This is supposed to be a uint64, but Gjs throws a warning that JS can't safely store the number. So we're using a string instead. -->
+      <default>""</default>
       <summary>Steam User ID</summary>
-      <description>The ID of a Steam user with a public wishlist.</description>
+      <description>The 64 bit ID of a Steam user.</description>
     </key>
 	</schema>
 </schemalist>
