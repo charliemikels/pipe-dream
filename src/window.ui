@@ -105,57 +105,60 @@
                   <object class="GtkStackPage">
                     <property name="title" translatable="yes">Wishlist Overview</property>
                     <property name="child">
-                      <!-- <object class="GtkScrolledWindow" id="wishlist_overview_page"> -->
-                      <!--   <property name="hexpand">true</property> -->
-                      <!--   <property name="vexpand">true</property> -->
-                      <!--   <property name="margin-top">6</property> -->
-                      <!--   <property name="margin-bottom">6</property> -->
-                      <!--   <property name="margin-start">6</property> -->
-                      <!--   <property name="margin-end">6</property> -->
-                      <!--   <property name="child"> -->
-                      <!--     <object class="GtkTextView" id="wishlist_overview_text_view"> -->
-                      <!--       <property name="monospace">true</property> -->
-                      <!--     </object> -->
-                      <!--   </property> -->
-                      <!-- </object> -->
-                      <object class="GtkFrame" id="wishlist_overview_page">
+                      <object class="AdwClamp" id="wishlist_overview_page">
+                        <property name="maximum-size">600</property>
                         <child>
-                          <object class="GtkColumnView" id="wishlist_col_view">
-                            <property name="show-column-separators">true</property>
-                            <property name="show-row-separators">true</property>
-                            <child>
-                              <object class="GtkColumnViewColumn" id="col_app_id">
-                                <property name="title" translatable="yes">App ID</property>
-                                <property name="factory">
-                                  <object class="GtkSignalListItemFactory"></object>
+                          <!-- <object class="GtkFrame"> -->
+                            <!-- <child> -->
+                              <object class="GtkScrolledWindow">
+                                <property name="hexpand">true</property>
+                                <property name="vexpand">true</property>
+                                <property name="margin-top">6</property>
+                                <property name="margin-bottom">6</property>
+                                <property name="margin-start">6</property>
+                                <property name="margin-end">6</property>
+                                <property name="child">
+                                  <object class="GtkColumnView" id="wishlist_col_view">
+                                    <property name="show-column-separators">true</property>
+                                    <property name="show-row-separators">true</property>
+                                    <child>
+                                      <object class="GtkColumnViewColumn" id="col_app_id">
+                                        <property name="title" translatable="yes">App ID</property>
+                                        <property name="factory">
+                                          <object class="GtkSignalListItemFactory"></object>
+                                        </property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkColumnViewColumn" id="col_name">
+                                        <property name="title" translatable="yes">Name</property>
+                                        <property name="factory">
+                                          <object class="GtkSignalListItemFactory"></object>
+                                        </property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkColumnViewColumn" id="col_priority">
+                                        <property name="title" translatable="yes">Wishlist Priority</property>
+                                        <property name="factory">
+                                          <object class="GtkSignalListItemFactory"></object>
+                                        </property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkColumnViewColumn" id="col_add_date">
+                                        <property name="title" translatable="yes">Add Date</property>
+                                        <property name="factory">
+                                          <object class="GtkSignalListItemFactory"></object>
+                                        </property>
+                                      </object>
+                                    </child>
+                                  </object>
+
                                 </property>
                               </object>
-                            </child>
-                            <child>
-                              <object class="GtkColumnViewColumn" id="col_name">
-                                <property name="title" translatable="yes">Name</property>
-                                <property name="factory">
-                                  <object class="GtkSignalListItemFactory"></object>
-                                </property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkColumnViewColumn" id="col_priority">
-                                <property name="title" translatable="yes">Wishlist Priority</property>
-                                <property name="factory">
-                                  <object class="GtkSignalListItemFactory"></object>
-                                </property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkColumnViewColumn" id="col_add_date">
-                                <property name="title" translatable="yes">Add Date</property>
-                                <property name="factory">
-                                  <object class="GtkSignalListItemFactory"></object>
-                                </property>
-                              </object>
-                            </child>
-                          </object>
+                            <!--   </child> -->
+                          <!-- </object> -->
                         </child>
                       </object>
                     </property>
