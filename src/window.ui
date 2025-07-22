@@ -106,7 +106,7 @@
                     <property name="title" translatable="yes">Wishlist Overview</property>
                     <property name="child">
                       <object class="AdwClamp" id="wishlist_overview_page">
-                        <property name="maximum-size">600</property>
+                        <!-- <property name="maximum-size">900</property> -->
                         <child>
                           <!-- <object class="GtkFrame"> -->
                             <!-- <child> -->

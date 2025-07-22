@@ -212,26 +212,24 @@ export const WishlistGame = GObject.registerClass(
         null,
         GObject.ParamFlags.READWRITE,
         Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER,
-        0.0
+        0
       ),
-      wishlistpriority: GObject.ParamSpec.int64(
+      wishlistpriority: GObject.ParamSpec.double(
         "wishlistpriority",
         null,
         null,
         GObject.ParamFlags.READWRITE,
-        Number.MIN_SAFE_INTEGER,
-        Number.MAX_SAFE_INTEGER,
+        Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER,
         0,
       ),
-      // dateadded: GObject.ParamSpec.int64(
-      //   "dateadded",
-      //   null,
-      //   null,
-      //   GObject.ParamFlags.READWRITE,
-      //   Number.MIN_SAFE_INTEGER,
-      //   Number.MAX_SAFE_INTEGER,
-      //   0,
-      // ),
+      timestamp: GObject.ParamSpec.double(
+        "timestamp",
+        null,
+        "The timestamp for when an item was added to the wishlist.",
+        GObject.ParamFlags.READWRITE,
+        Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER,
+        0,
+      ),
     },
   },
   class WishlistGame extends GObject.Object {},
@@ -249,8 +247,8 @@ export async function fetch_steam_user_info(steam_user_id) {
         const wishlist_game = new WishlistGame({
             name: await get_app_name(entry.appid.toString()),
             appid: entry.appid,
-            // wishlistpriority: entry.priority,
-            // dateadded: TODO
+            wishlistpriority: entry.priority,
+            timestamp: entry.date_added
         });
         wishlist_games.push(wishlist_game)
     }

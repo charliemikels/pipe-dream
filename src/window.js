@@ -82,31 +82,34 @@ export const PipedreamWindow = GObject.registerClass({
           label_widget.label = model_item.name;
         });
 
-        // this._col_priority.factory.connect("setup", (_self, list_item) => {
-        //   const label = new Gtk.Label({
-        //     margin_start: 12,
-        //     margin_end: 12,
-        //   });
-        //   list_item.set_child(label);
-        // });
-        // this._col_priority.factory.connect("bind", (_self, list_item) => {
-        //   const label_widget = list_item.get_child();
-        //   const model_item = list_item.get_item();
-        //   label_widget.label = model_item.priority;
-        // });
+        this._col_priority.factory.connect("setup", (_self, list_item) => {
+          const label = new Gtk.Label({
+            margin_start: 12,
+            margin_end: 12,
+          });
+          list_item.set_child(label);
+        });
+        this._col_priority.factory.connect("bind", (_self, list_item) => {
+          const label_widget = list_item.get_child();
+          const model_item = list_item.get_item();
+          label_widget.label = model_item.wishlistpriority.toString();
+        });
 
-        // this._col_add_date.factory.connect("setup", (_self, list_item) => {
-        //   const label = new Gtk.Label({
-        //     margin_start: 12,
-        //     margin_end: 12,
-        //   });
-        //   list_item.set_child(label);
-        // });
-        // this._col_add_date.factory.connect("bind", (_self, list_item) => {
-        //   const label_widget = list_item.get_child();
-        //   const model_item = list_item.get_item();
-        //   label_widget.label = model_item.date_added;
-        // });
+        this._col_add_date.factory.connect("setup", (_self, list_item) => {
+          const label = new Gtk.Label({
+            margin_start: 12,
+            margin_end: 12,
+          });
+          list_item.set_child(label);
+        });
+        this._col_add_date.factory.connect("bind", (_self, list_item) => {
+          const label_widget = list_item.get_child();
+          const model_item = list_item.get_item();
+          // label_widget.label = model_item.timestamp.toString();
+
+          const date = new Date(model_item.timestamp * 1000)
+          label_widget.label = date.toDateString();
+        });
     }
 
     async setUserId() {
