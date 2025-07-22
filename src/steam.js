@@ -205,14 +205,14 @@ export const WishlistGame = GObject.registerClass(
         GObject.ParamFlags.READWRITE,
         "",
       ),
-      appid: GObject.ParamSpec.int64(
-        "appid",
+      // See https://gjs.guide/guides/gobject/subclassing.html#numeric-types and https://gitlab.gnome.org/GNOME/gjs/-/issues/271
+      appid: GObject.ParamSpec.double(
+        'appid',
         null,
         null,
         GObject.ParamFlags.READWRITE,
-        Number.MIN_SAFE_INTEGER,
-        Number.MAX_SAFE_INTEGER,
-        0,
+        Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER,
+        0.0
       ),
       wishlistpriority: GObject.ParamSpec.int64(
         "wishlistpriority",
@@ -249,7 +249,7 @@ export async function fetch_steam_user_info(steam_user_id) {
         const wishlist_game = new WishlistGame({
             name: await get_app_name(entry.appid.toString()),
             appid: entry.appid,
-            wishlistpriority: entry.priority,
+            // wishlistpriority: entry.priority,
             // dateadded: TODO
         });
         wishlist_games.push(wishlist_game)

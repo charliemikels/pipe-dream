@@ -56,18 +56,18 @@ export const PipedreamWindow = GObject.registerClass({
         });
 
         // Column setup
-        // this._col_app_id.factory.connect("setup", (_self, list_item) => {
-        //   const label = new Gtk.Label({
-        //     margin_start: 12,
-        //     margin_end: 12,
-        //   });
-        //   list_item.set_child(label);
-        // });
-        // this._col_app_id.factory.connect("bind", (_self, list_item) => {
-        //   const label_widget = list_item.get_child();
-        //   const model_item = list_item.get_item();
-        //   label_widget.label = model_item.appid;
-        // });
+        this._col_app_id.factory.connect("setup", (_self, list_item) => {
+          const label = new Gtk.Label({
+            margin_start: 12,
+            margin_end: 12,
+          });
+          list_item.set_child(label);
+        });
+        this._col_app_id.factory.connect("bind", (_self, list_item) => {
+          const label_widget = list_item.get_child();
+          const model_item = list_item.get_item();
+          label_widget.label = model_item.appid.toString();
+        });
 
         this._col_name.factory.connect("setup", (_self, list_item) => {
           const label = new Gtk.Label({
