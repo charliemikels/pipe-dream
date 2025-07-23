@@ -23,6 +23,8 @@ import Gtk from 'gi://Gtk';
 import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 
+import { WishlistEntryListRow } from './wishlist_entry_list_row.js';
+
 import { fetch_steam_user_info } from './steam.js';
 
 export const PipedreamWindow = GObject.registerClass({
@@ -36,11 +38,13 @@ export const PipedreamWindow = GObject.registerClass({
         'loading_spinner_page',
 
         'wishlist_overview_page',
-        'wishlist_col_view',
-        'col_app_id',
-        'col_name',
-        'col_priority',
-        'col_add_date',
+        // 'wishlist_col_view',
+        // 'col_app_id',
+        // 'col_name',
+        // 'col_priority',
+        // 'col_add_date',
+
+        'wishlist_rows_list_box',
     ],
 }, class PipedreamWindow extends Adw.ApplicationWindow {
     constructor(application) {
@@ -52,64 +56,64 @@ export const PipedreamWindow = GObject.registerClass({
         }
 
         this._steam_user_id_entry.connect('apply', () => {
-            this.setUserId();
+            this.setUserId().catch((e) => {console.log(e)});
         });
 
         // Column setup
-        this._col_app_id.factory.connect("setup", (_self, list_item) => {
-          const label = new Gtk.Label({
-            margin_start: 12,
-            margin_end: 12,
-          });
-          list_item.set_child(label);
-        });
-        this._col_app_id.factory.connect("bind", (_self, list_item) => {
-          const label_widget = list_item.get_child();
-          const model_item = list_item.get_item();
-          label_widget.label = model_item.appid.toString();
-        });
+        // this._col_app_id.factory.connect("setup", (_self, list_item) => {
+        //   const label = new Gtk.Label({
+        //     margin_start: 12,
+        //     margin_end: 12,
+        //   });
+        //   list_item.set_child(label);
+        // });
+        // this._col_app_id.factory.connect("bind", (_self, list_item) => {
+        //   const label_widget = list_item.get_child();
+        //   const model_item = list_item.get_item();
+        //   label_widget.label = model_item.appid.toString();
+        // });
 
-        this._col_name.factory.connect("setup", (_self, list_item) => {
-          const label = new Gtk.Label({
-            margin_start: 12,
-            margin_end: 12,
-          });
-          list_item.set_child(label);
-        });
-        this._col_name.factory.connect("bind", (_self, list_item) => {
-          const label_widget = list_item.get_child();
-          const model_item = list_item.get_item();
-          label_widget.label = model_item.name;
-        });
+        // this._col_name.factory.connect("setup", (_self, list_item) => {
+        //   const label = new Gtk.Label({
+        //     margin_start: 12,
+        //     margin_end: 12,
+        //   });
+        //   list_item.set_child(label);
+        // });
+        // this._col_name.factory.connect("bind", (_self, list_item) => {
+        //   const label_widget = list_item.get_child();
+        //   const model_item = list_item.get_item();
+        //   label_widget.label = model_item.name;
+        // });
 
-        this._col_priority.factory.connect("setup", (_self, list_item) => {
-          const label = new Gtk.Label({
-            margin_start: 12,
-            margin_end: 12,
-          });
-          list_item.set_child(label);
-        });
-        this._col_priority.factory.connect("bind", (_self, list_item) => {
-          const label_widget = list_item.get_child();
-          const model_item = list_item.get_item();
-          label_widget.label = model_item.wishlistpriority.toString();
-        });
+        // this._col_priority.factory.connect("setup", (_self, list_item) => {
+        //   const label = new Gtk.Label({
+        //     margin_start: 12,
+        //     margin_end: 12,
+        //   });
+        //   list_item.set_child(label);
+        // });
+        // this._col_priority.factory.connect("bind", (_self, list_item) => {
+        //   const label_widget = list_item.get_child();
+        //   const model_item = list_item.get_item();
+        //   label_widget.label = model_item.wishlistpriority.toString();
+        // });
 
-        this._col_add_date.factory.connect("setup", (_self, list_item) => {
-          const label = new Gtk.Label({
-            margin_start: 12,
-            margin_end: 12,
-          });
-          list_item.set_child(label);
-        });
-        this._col_add_date.factory.connect("bind", (_self, list_item) => {
-          const label_widget = list_item.get_child();
-          const model_item = list_item.get_item();
+        // this._col_add_date.factory.connect("setup", (_self, list_item) => {
+        //   const label = new Gtk.Label({
+        //     margin_start: 12,
+        //     margin_end: 12,
+        //   });
+        //   list_item.set_child(label);
+        // });
+        // this._col_add_date.factory.connect("bind", (_self, list_item) => {
+        //   const label_widget = list_item.get_child();
+        //   const model_item = list_item.get_item();
           // label_widget.label = model_item.timestamp.toString();
 
-          const date = new Date(model_item.timestamp * 1000)
-          label_widget.label = date.toDateString();
-        });
+        //   const date = new Date(model_item.timestamp * 1000)
+        //   label_widget.label = date.toDateString();
+        // });
     }
 
     async setUserId() {
@@ -133,13 +137,24 @@ export const PipedreamWindow = GObject.registerClass({
             const settings = new Gio.Settings({ schema_id: 'place.pumpkin.pipedream' });
             settings.set_string("userid", user_id)
 
-            const sort_model = new Gtk.SortListModel({
-              model: result.data_model,
-              sorter: this._wishlist_col_view.sorter,
-            });
-            this._wishlist_col_view.model = new Gtk.SingleSelection({
-              model: sort_model,
-            });
+            // const sort_model = new Gtk.SortListModel({
+            //   model: result.data_model,
+            //   sorter: this._wishlist_col_view.sorter,
+            // });
+            // this._wishlist_col_view.model = new Gtk.SingleSelection({
+            //   model: sort_model,
+            // });
+
+            this._wishlist_rows_list_box.remove_all()
+
+            for (const item of result.list) {
+                let row = new WishlistEntryListRow();
+                row.setData({
+                    app_name: item.appname,
+                    app_id: item.appid
+                });
+                this._wishlist_rows_list_box.append(row);
+            }
 
             this._stack.set_visible_child(this._wishlist_overview_page);
         }

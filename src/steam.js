@@ -244,8 +244,9 @@ export async function fetch_steam_user_info(steam_user_id) {
     for (const entry of results.list) {
         console.log(entry)
         console.log(entry.appid)
+        entry.appname = await get_app_name(entry.appid.toString())
         const wishlist_game = new WishlistGame({
-            name: await get_app_name(entry.appid.toString()),
+            name: entry.appname,
             appid: entry.appid,
             wishlistpriority: entry.priority,
             timestamp: entry.date_added

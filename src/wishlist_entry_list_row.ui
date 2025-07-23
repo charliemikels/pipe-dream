@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="WishlistEntryListRow" parent="GtkBox">
+    <property name="orientation">horizontal</property>
+    <child>
+      <object class="GtkLabel" id="app_name_label">
+        <property name="xalign">0</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkLabel" id="app_id_label">
+        <property name="xalign">1</property>
+      </object>
+    </child>
+  </template>
+</interface>

@@ -4,5 +4,6 @@
     <file>main.js</file>
     <file>window.js</file>
     <file>steam.js</file>
+    <file>wishlist_entry_list_row.js</file>
   </gresource>
 </gresources>
