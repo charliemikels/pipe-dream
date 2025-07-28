@@ -108,24 +108,19 @@
                       <object class="AdwClamp" id="wishlist_overview_page">
                         <property name="maximum-size">900</property>
                         <child>
-
-
-                          <!-- <object class="GtkBox"> -->
-                          <!--   <property name="orientation">1</property> -->
-                          <!--   <property name="vexpand">true</property> -->
-                          <!--   <property name="margin-start">6</property> -->
-                          <!--   <property name="margin-end">6</property> -->
-                          <!--   <property name="spacing">18</property> -->
-                          <!--   <property name="valign">center</property> -->
-                          <!--   <child> -->
-                          <!--     <object class="GtkLabel"> -->
-                          <!--       <property name="xalign">0</property> -->
-                          <!--       <property name="label" translatable="yes">Your wishlist</property> -->
-                          <!--     </object> -->
-                          <!--   </child> -->
-                          <!--   <child> -->
-
-
+                          <object class="GtkBox">
+                            <property name="orientation">1</property>
+                            <property name="vexpand">true</property>
+                            <property name="margin-start">6</property>
+                            <property name="margin-end">6</property>
+                            <!-- <property name="spacing">18</property> -->
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Your wishlist</property>
+                              </object>
+                            </child>
+                            <child>
                               <object class="GtkScrolledWindow">
                                 <property name="hexpand">true</property>
                                 <property name="vexpand">true</property>
@@ -134,19 +129,11 @@
                                 <property name="margin-start">6</property>
                                 <property name="margin-end">6</property>
                                 <property name="child">
-
                                   <object class="GtkBox">
                                     <property name="orientation">1</property>
                                     <!-- <property name="margin-bottom">30</property> -->
                                     <property name="spacing">18</property>
                                     <property name="valign">center</property>
-                                    <child>
-                                      <object class="GtkLabel">
-                                        <property name="xalign">0</property>
-                                        <property name="label" translatable="yes">Your wishlist</property>
-                                      </object>
-                                    </child>
-
                                     <child>
                                       <object class="GtkListBox" id="wishlist_rows_list_box">
                                         <property name="selection-mode">0</property>
@@ -154,18 +141,15 @@
                                         <child>
                                           <!-- Will be populated using a template -->
                                         </child>
-                                      </object>
+                                      </object><!-- /wishlist_rows_list_box -->
                                     </child>
                                   </object>
                                 </property>
                               </object>
-
-                          <!--   </child> -->
-                          <!-- </object> -->
-
-
+                            </child>
+                          </object>
                         </child>
-                      </object>
+                      </object><!-- /wishlist_overview_page -->
                     </property>
                   </object>
                 </child>
