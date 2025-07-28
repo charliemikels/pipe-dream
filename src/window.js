@@ -38,12 +38,6 @@ export const PipedreamWindow = GObject.registerClass({
         'loading_spinner_page',
 
         'wishlist_overview_page',
-        // 'wishlist_col_view',
-        // 'col_app_id',
-        // 'col_name',
-        // 'col_priority',
-        // 'col_add_date',
-
         'wishlist_rows_list_box',
     ],
 }, class PipedreamWindow extends Adw.ApplicationWindow {
@@ -58,62 +52,6 @@ export const PipedreamWindow = GObject.registerClass({
         this._steam_user_id_entry.connect('apply', () => {
             this.setUserId().catch((e) => {console.log(e)});
         });
-
-        // Column setup
-        // this._col_app_id.factory.connect("setup", (_self, list_item) => {
-        //   const label = new Gtk.Label({
-        //     margin_start: 12,
-        //     margin_end: 12,
-        //   });
-        //   list_item.set_child(label);
-        // });
-        // this._col_app_id.factory.connect("bind", (_self, list_item) => {
-        //   const label_widget = list_item.get_child();
-        //   const model_item = list_item.get_item();
-        //   label_widget.label = model_item.appid.toString();
-        // });
-
-        // this._col_name.factory.connect("setup", (_self, list_item) => {
-        //   const label = new Gtk.Label({
-        //     margin_start: 12,
-        //     margin_end: 12,
-        //   });
-        //   list_item.set_child(label);
-        // });
-        // this._col_name.factory.connect("bind", (_self, list_item) => {
-        //   const label_widget = list_item.get_child();
-        //   const model_item = list_item.get_item();
-        //   label_widget.label = model_item.name;
-        // });
-
-        // this._col_priority.factory.connect("setup", (_self, list_item) => {
-        //   const label = new Gtk.Label({
-        //     margin_start: 12,
-        //     margin_end: 12,
-        //   });
-        //   list_item.set_child(label);
-        // });
-        // this._col_priority.factory.connect("bind", (_self, list_item) => {
-        //   const label_widget = list_item.get_child();
-        //   const model_item = list_item.get_item();
-        //   label_widget.label = model_item.wishlistpriority.toString();
-        // });
-
-        // this._col_add_date.factory.connect("setup", (_self, list_item) => {
-        //   const label = new Gtk.Label({
-        //     margin_start: 12,
-        //     margin_end: 12,
-        //   });
-        //   list_item.set_child(label);
-        // });
-        // this._col_add_date.factory.connect("bind", (_self, list_item) => {
-        //   const label_widget = list_item.get_child();
-        //   const model_item = list_item.get_item();
-          // label_widget.label = model_item.timestamp.toString();
-
-        //   const date = new Date(model_item.timestamp * 1000)
-        //   label_widget.label = date.toDateString();
-        // });
     }
 
     async setUserId() {
@@ -136,14 +74,6 @@ export const PipedreamWindow = GObject.registerClass({
 
             const settings = new Gio.Settings({ schema_id: 'place.pumpkin.pipedream' });
             settings.set_string("userid", user_id)
-
-            // const sort_model = new Gtk.SortListModel({
-            //   model: result.data_model,
-            //   sorter: this._wishlist_col_view.sorter,
-            // });
-            // this._wishlist_col_view.model = new Gtk.SingleSelection({
-            //   model: sort_model,
-            // });
 
             this._wishlist_rows_list_box.remove_all()
 

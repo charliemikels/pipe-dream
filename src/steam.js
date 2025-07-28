@@ -195,70 +195,14 @@ async function get_app_name(appid) {
 }
 
 
-export const WishlistGame = GObject.registerClass(
-  {
-    Properties: {
-      name: GObject.ParamSpec.string(
-        "name",
-        null,
-        null,
-        GObject.ParamFlags.READWRITE,
-        "",
-      ),
-      // See https://gjs.guide/guides/gobject/subclassing.html#numeric-types and https://gitlab.gnome.org/GNOME/gjs/-/issues/271
-      appid: GObject.ParamSpec.double(
-        'appid',
-        null,
-        null,
-        GObject.ParamFlags.READWRITE,
-        Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER,
-        0
-      ),
-      wishlistpriority: GObject.ParamSpec.double(
-        "wishlistpriority",
-        null,
-        null,
-        GObject.ParamFlags.READWRITE,
-        Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER,
-        0,
-      ),
-      timestamp: GObject.ParamSpec.double(
-        "timestamp",
-        null,
-        "The timestamp for when an item was added to the wishlist.",
-        GObject.ParamFlags.READWRITE,
-        Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER,
-        0,
-      ),
-    },
-  },
-  class WishlistGame extends GObject.Object {},
-)
-
 export async function fetch_steam_user_info(steam_user_id) {
     // Get wishlist
     const results = await getMyWishlist(steam_user_id)
     if ( results.list == null) { return results }
 
-    const wishlist_games = []
     for (const entry of results.list) {
-        console.log(entry)
-        console.log(entry.appid)
         entry.appname = await get_app_name(entry.appid.toString())
-        const wishlist_game = new WishlistGame({
-            name: entry.appname,
-            appid: entry.appid,
-            wishlistpriority: entry.priority,
-            timestamp: entry.date_added
-        });
-        wishlist_games.push(wishlist_game)
     }
 
-    const data_model = new Gio.ListStore({ item_type: WishlistGame });
-    data_model.splice(0, 0, wishlist_games);
-    results.data_model = data_model
-
     return results
-    // console.log(list)
-    // return results, http_code
 }
